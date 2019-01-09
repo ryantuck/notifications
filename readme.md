@@ -37,6 +37,8 @@ Install [`terminal-notifier`](https://github.com/julienXX/terminal-notifier).
 $ brew install terminal-notifier
 ```
 
+**To make notifications stay until ack'd** - System Preferences > Notifications > terminal-notifier > check "Alerts"
+
 Create a symlink to the `notifications` script:
 
 ```
