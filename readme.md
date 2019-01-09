@@ -1,8 +1,10 @@
 # notifications
 
-Write notifications to yourself. Get mac notifications.
+Barebones MacOS notifications to your future self.
 
-## Usage
+![check it out](screenshot.png)
+
+## usage
 
 Assuming the `notifications` script is set up to run on a regular cron, just add lines to `~/.notifications` like so:
 
@@ -49,7 +51,3 @@ Add to cron:
 ```
 
 **Note** to edit the crontab on a mac, do `crontab -e`.
-
-## demo
-
-![check it out](screenshot.png)
