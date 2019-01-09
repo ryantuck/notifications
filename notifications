@@ -1,0 +1,58 @@
+#!/usr/local/bin/python3
+import dateutil
+import datetime
+import os
+import subprocess
+
+
+def _read_notifications():
+    home = os.path.expanduser('~')
+    with open(os.path.join(home, '.notifications')) as f:
+        return [r.strip('\n') for r in f.readlines()]
+
+
+def _write_notifications(notifications):
+    home = os.path.expanduser('~')
+    with open(os.path.join(home, '.notifications'), 'w') as f:
+        f.write('\n'.join(notifications))
+
+
+def _time_from_notification(notification):
+    time_of_day = notification.split(' ')[0]
+    return dateutil.parser.parse(time_of_day)
+
+
+def _is_valid_notification(notification):
+    try:
+        timestamp = _time_from_notification(notification)
+        return True
+    except:
+        return False
+
+
+def notify(notification):
+    cmd = f'/usr/local/bin/terminal-notifier -message "{notification}"'
+    process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    output, error = process.communicate()
+
+
+def process_all_notifications():
+    notifications = _read_notifications()
+    invalid_notifications = [n for n in notifications if not _is_valid_notification(n)]
+    for n in invalid_notifications:
+        notify(n)
+        notifications.pop(notifications.index(n))
+    if notifications == []:
+        _write_notifications([])
+        return
+    ready_notifications = [
+        n for n in notifications if _time_from_notification(n) < datetime.datetime.now()
+    ]
+    for n in ready_notifications:
+        notify(n)
+        notifications.pop(notifications.index(n))
+    _write_notifications(notifications)
+
+
+if __name__ == '__main__':
+    process_all_notifications()
