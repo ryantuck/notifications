@@ -15,7 +15,8 @@ def _write_notifications(notifications):
     home = os.path.expanduser('~')
     with open(os.path.join(home, '.notifications'), 'w') as f:
         f.write('\n'.join(notifications))
-        f.write('\n')
+        if len(notifications) > 0:
+            f.write('\n')
 
 
 def _time_from_notification(notification):
